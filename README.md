@@ -117,9 +117,12 @@ entries under the System Environment Variables section:
 
 ### Install docker client on Windows
 
+First download the docker client from the following url, substituting for the release you want:
+
 ```
-// instructions coming soon
+https://dockermsft.blob.core.windows.net/dockercontainer/docker-19-03-1.zip
 ```
+
 
 ### Install docker-compose on Windows
 
