@@ -22,11 +22,26 @@ a simple script to allow automation of this setup.
 
 ## Setup Steps
 
+1. [Add wsl.conf to Ubuntu](#add-wsl-conf-to-ubuntu)
 1. [Install Docker on Ubuntu](#install-docker-on-ubuntu)
 2. [Configure Docker on Ubuntu](#configure-docker-on-ubuntu)
 3. [Set docker env vars on Windows](#set-docker-env-vars-on-windows)
 4. [Install docker client on Windows](#install-docker-client-on-windows)
 5. [Install docker-compose on Windows](#install-docker-compose-on-windows)
+
+### Add `wsl.conf` to Ubuntu
+
+Save the following file as `/etc/wsl.conf` on your Ubuntu host:
+
+```
+[automount]
+root = /
+options = "metadata"
+```
+This will mount all of your mapped drives to a corresponding letter
+in the root of your Ubuntu filesystem. This is what will allow you
+the "native" experience of editing file on Windows and running them
+from your windows _or_ ubuntu terminals.
 
 ### Install Docker on Ubuntu
 
