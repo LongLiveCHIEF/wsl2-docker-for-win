@@ -45,21 +45,75 @@ from your windows _or_ ubuntu terminals.
 
 ### Install Docker on Ubuntu
 
+This step is mostly going to follow the [Docker Installing on Ubuntu][] docs, with one
+major exception. The current Ubuntu distro from Microsoft doesn't use `systemd`, so
+you'll have to start/stop docker with `sudo service docker {start|stop|restart|enable|disable}`.
+
+
 ```
-// instructions coming soon
+$ sudo apt update
+$ sudo apt install apt-transport-https ca-certificates curl \
+    gnupg-agent software-properties-common
+```
+Then add dockers gpg key. 
+
+```
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add
+```
+
+Now install the _edge_ docker-ce. (stable will probably work, but I suspect less errors
+with WSL2 on windows will happen on edge)
+
+```
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   edge"
 ```
 
 ### Configure Docker on Ubuntu
 
+In order for the `docker` command on the windows host to run
+"natively", we'll need to use the daemon running in WSL to allow
+connections from the Windows Host.
+
+Since Windows Build `18945`, services on the WSL machine are automatically exposed
+to `localhost` on the Windows side, and vice-versa.
+
+There is probably a startup script that can be run to figure out what the IP of the Windows
+Host is from the Linux machine, but I haven't gotten that far yet, so for now, we'll
+just set the daemon to listen to `unix://` and _optionally_ `tcp://0.0.0.0:2375`.
+
+If you don't intend to use the `docker` command from powershell or a windows terminal,
+and map the wsl as a network drive, you can remote the host entry as noted below to
+increase security.
+
+Create the following `/etc/docker/daemon.json` file in WSL machine:
+
 ```
-// instructions coming soon
+{
+    "hosts": ["unix://", "tcp://0.0.0.0:2375"], // remove the tcp if you only use docker-cli from Ubuntu
+    "experimental": true
+}
+```
+
+### Enable and start the docker daemon
+
+```
+sudo service docker enable
+sudo service docker start
 ```
 
 ### Set docker env vars on Windows
 
-```
-// instructions coming soon
-```
+Open up your Environment Variables in Windows, and add the following
+entries under the System Environment Variables section:
+
+| Env Var | Value | Required/Optional |
+| ======= | ===== | ================= |
+| `DOCKER_HOST` | `tcp://localhost:2375` | Required |
+| `DOCKER_CLI_EXPERIMENTAL` | `enabled` | Optional |
+| `DOCKER_API_VERSION | `1.40` | Optional |
 
 ### Install docker client on Windows
 
@@ -77,6 +131,7 @@ from your windows _or_ ubuntu terminals.
 [wsl2 tech preview]: https://docs.docker.com/docker-for-windows/wsl-tech-preview/
 [issue-4586]: https://github.com/docker/for-win/issues/4586
 [install-wsl2]: https://docs.microsoft.com/en-us/windows/wsl/wsl2-install
+[Docker Installing on Ubuntu]: https://docs.docker.com/install/linux/docker-ce/ubuntu/
 [ubuntu-store]: https://www.microsoft.com/store/productId/9N9TNGVNDL3Q
 [windows-terminal-store]: https://www.microsoft.com/store/productId/9N0DX20HK701
 [chocolatey]: https://chocolatey.org/
