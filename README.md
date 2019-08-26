@@ -61,9 +61,9 @@ since you might have your own reasons for wanting low-level powershell docker in
 1. [Add wsl.conf to Ubuntu](#add-wsl-conf-to-ubuntu)
 1. [Install Docker on Ubuntu](#install-docker-on-ubuntu)
 2. [Configure Docker on Ubuntu](#configure-docker-on-ubuntu)
-3. [Set docker env vars on Windows](#set-docker-env-vars-on-windows)
-4. [Install docker client on Windows](#install-docker-client-on-windows)
-5. [Install docker-compose on Windows](#install-docker-compose-on-windows)
+3. (Optional) [Set docker env vars on Windows](#set-docker-env-vars-on-windows)
+4. (Optional) [Install docker client on Windows](#install-docker-client-on-windows)
+5. (Optional) [Install docker-compose on Windows](#install-docker-compose-on-windows)
 
 ### Add `wsl.conf` to Ubuntu
 
