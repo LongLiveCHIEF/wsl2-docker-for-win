@@ -1,5 +1,9 @@
 # WSL2 Docker on Windows
 
+  - [Prerequisites](#prerequisites)
+  - [Usage](#usage)
+  - [Installation](#installation)
+
 Back in July, Docker announnced that with WSL2, they could create a more native Linux
 experience for Docker on Windows, and in so doing, opened up the door for that experience
 to work on Windows 10 Home.
@@ -16,11 +20,43 @@ a simple script to allow automation of this setup.
 
 - Be running Windows Build 18945 or higher. (`18917` or higher shoud work, but you won't get automatic localhost resolution between Windows and Linux processes)
 - Have wsl2 setup [Microsoft Docs - Install WSL2][install-wsl2]
-- and Ubuntu 18.04 installed [Store link - Ubuntu 18.04][ubuntu-store]
+- Ubuntu 18.04 installed [Store link - Ubuntu 18.04][ubuntu-store]
 - (Optional) Install new Windows Terminal [from Store][windows-terminal-store]
 - (Optional) Install [chocolatey][]
 
-## Setup Steps
+## Usage
+
+So here's the thing. Once I got everything up and runing, I found I had absolutely no need
+to install the native windows docker client!  I wound up mapping `\\wsl$\\Ubuntu-18.04` to 
+my `U:` drive, and automounting  `root = /` in `/etc/wsl.conf` on Ubuntu (Installation step 1).
+
+As a result, I can now navigate to `U:` in windows explorer or my editor of choice to open and edit
+files in the Ubuntu filesystem, _including_ files on any mapped Windows drive.
+
+For example, I have a 240G SSD mounted as `Y` drive, and that is exclusively where I have my
+source code.
+
+Now, I can open VSCode on Windows, and create a new project at `Y:/example_project`, and those files
+will be accessible _inside Ubuntu_ at `/y/example_project`. 
+
+In VSCode I set my default terminal as the Ubuntu bash terminal, (require the new [Windows Terminal][windows-terminal-store]), and `cd /y/example_project`.
+
+I can now edit files on windows _or_ on Linux, and use `docker run -v $PWD:/app` and it will mount
+the files I'm editing in windows, into the docker container that is running on Linux.
+The same concept works with _any_ Windows drive.
+I could have created my project at `C:\Users\username\example_project` and `cd /c/Users/username/example_project`
+in my terminal.
+
+This _is_ the same experience you get with docker on its native platform (Linux), _without_ having to use
+some tiny VM emulation layer, and having to deal with samba mounts and [passwords to share][c-share-passwords] 
+your `C` drive for the
+windows docker client. WSL gives you seamless integration with Ubuntu, including [exposing ports on
+localhost between the two kernels][localhost-mapping-wsl].
+
+Therefore, installing the docker client on Windows is _completely_ optional! (I included the steps below anyways,
+since you might have your own reasons for wanting low-level powershell docker integration)
+
+## Installation
 
 1. [Add wsl.conf to Ubuntu](#add-wsl-conf-to-ubuntu)
 1. [Install Docker on Ubuntu](#install-docker-on-ubuntu)
@@ -38,6 +74,7 @@ Save the following file as `/etc/wsl.conf` on your Ubuntu host:
 root = /
 options = "metadata"
 ```
+
 This will mount all of your mapped drives to a corresponding letter
 in the root of your Ubuntu filesystem. This is what will allow you
 the "native" experience of editing file on Windows and running them
@@ -125,9 +162,41 @@ https://dockermsft.blob.core.windows.net/dockercontainer/docker-19-03-1.zip
 
 2. Unzip the contents of the `docker-19.03-1.zip` to `C:\Program Files\Docker` (new directory)
 *Note:* Make sure that the `docker.exe` is at `C:\Program files\Docker\docker.exe`
+
 3. Add `C:\Program Files\Docker` to the _System_ `PATH` Environment Variable
+4. Run `refreshenv` in Powershell and you should now be able to run `docker version`!
 
+You should see output similar to below:
 
+```
+Client: Docker Engine - Community
+ Version:           19.03.1      
+ API version:       1.40    
+ Go version:        go1.12.5
+ Git commit:        74b1e89 
+ Built:             Thu Jul 25 21:21:05 2019
+ OS/Arch:           linux/amd64
+ Experimental:      false
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          19.03.1
+  API version:      1.40 (minimum version 1.12)
+  Go version:       go1.12.5
+  Git commit:       74b1e89
+  Built:            Thu Jul 25 21:19:41 2019
+  OS/Arch:          linux/amd64
+  Experimental:     true
+ containerd:
+  Version:          1.2.6
+  GitCommit:        894b81a4b802e4eb2a91d1ce216b8817763c29fb
+ runc:
+  Version:          1.0.0-rc8
+  GitCommit:        425e105d5a03fabd737a126ad93d62a9eeede87f
+ docker-init:
+  Version:          0.18.0
+  GitCommit:        fec3683
+```
 
 ### Install docker-compose on Windows
 
@@ -137,11 +206,12 @@ Using [chocolatey][] is the easiest for this one:
 choco install docker-compose
 ```
 
-
-[wsl2 tech preview]: https://docs.docker.com/docker-for-windows/wsl-tech-preview/
-[issue-4586]: https://github.com/docker/for-win/issues/4586
-[install-wsl2]: https://docs.microsoft.com/en-us/windows/wsl/wsl2-install
+[c-share-passwords]: https://github.com/docker/for-win/issues/616 
+[chocolatey]: https://chocolatey.org/
 [Docker Installing on Ubuntu]: https://docs.docker.com/install/linux/docker-ce/ubuntu/
+[install-wsl2]: https://docs.microsoft.com/en-us/windows/wsl/wsl2-install
+[issue-4586]: https://github.com/docker/for-win/issues/4586
+[localhost-mapping-wsl]: https://devblogs.microsoft.com/commandline/whats-new-for-wsl-in-insiders-preview-build-18945/
 [ubuntu-store]: https://www.microsoft.com/store/productId/9N9TNGVNDL3Q
 [windows-terminal-store]: https://www.microsoft.com/store/productId/9N0DX20HK701
-[chocolatey]: https://chocolatey.org/
+[wsl2 tech preview]: https://docs.docker.com/docker-for-windows/wsl-tech-preview/
