@@ -14,7 +14,7 @@ a simple script to allow automation of this setup.
 
 ## Prerequisites
 
-- Be running Windows Build 18945 or higher.
+- Be running Windows Build 18945 or higher. (`18917` or higher shoud work, but you won't get automatic localhost resolution between Windows and Linux processes)
 - Have wsl2 setup [Microsoft Docs - Install WSL2][install-wsl2]
 - and Ubuntu 18.04 installed [Store link - Ubuntu 18.04][ubuntu-store]
 - (Optional) Install new Windows Terminal [from Store][windows-terminal-store]
@@ -117,17 +117,24 @@ entries under the System Environment Variables section:
 
 ### Install docker client on Windows
 
-First download the docker client from the following url, substituting for the release you want:
+1. Download the docker client from the following url, substituting for the release you want:
 
 ```
 https://dockermsft.blob.core.windows.net/dockercontainer/docker-19-03-1.zip
 ```
 
+2. Unzip the contents of the `docker-19.03-1.zip` to `C:\Program Files\Docker` (new directory)
+*Note:* Make sure that the `docker.exe` is at `C:\Program files\Docker\docker.exe`
+3. Add `C:\Program Files\Docker` to the _System_ `PATH` Environment Variable
+
+
 
 ### Install docker-compose on Windows
 
+Using [chocolatey][] is the easiest for this one:
+
 ```
-// instructions coming soon
+choco install docker-compose
 ```
 
 
