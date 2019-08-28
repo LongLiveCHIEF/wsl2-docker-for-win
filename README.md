@@ -147,10 +147,10 @@ Open up your Environment Variables in Windows, and add the following
 entries under the System Environment Variables section:
 
 | Env Var | Value | Required/Optional |
-| ======= | ===== | ================= |
+| --------| ----- | ----------------- |
 | `DOCKER_HOST` | `tcp://localhost:2375` | Required |
 | `DOCKER_CLI_EXPERIMENTAL` | `enabled` | Optional |
-| `DOCKER_API_VERSION | `1.40` | Optional |
+| `DOCKER_API_VERSION` | `1.40` | Optional |
 
 ### Install docker client on Windows
 
