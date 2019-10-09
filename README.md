@@ -98,14 +98,19 @@ Then add dockers gpg key.
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add
 ```
 
-Now install the _edge_ docker-ce. (stable will probably work, but I suspect less errors
+Add the _edge_ docker repository. (stable will probably work, but I suspect less errors
 with WSL2 on windows will happen on edge)
-
 ```
 sudo add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
    edge"
+```
+
+Install Docker
+
+```
+sudo apt install docker-ce
 ```
 
 ### Configure Docker on Ubuntu
