@@ -110,7 +110,7 @@ sudo add-apt-repository \
 Install Docker
 
 ```
-sudo apt install docker-ce
+sudo apt install docker-ce docker-cli
 ```
 
 ### Configure Docker on Ubuntu
