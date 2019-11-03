@@ -92,25 +92,42 @@ $ sudo apt update
 $ sudo apt install apt-transport-https ca-certificates curl \
     gnupg-agent software-properties-common
 ```
-Then add dockers gpg key. 
+Then add dockers gpg key and verify it matches shown fingerprint
 
 ```
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add
+$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add
+$ sudo apt-key fingerprint 0EBFCD88
+    
+pub   rsa4096 2017-02-22 [SCEA]
+      9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88
+uid           [ unknown] Docker Release (CE deb) <docker@docker.com>
+sub   rsa4096 2017-02-22 [S]
 ```
 
 Add the _edge_ docker repository. (stable will probably work, but I suspect less errors
 with WSL2 on windows will happen on edge)
 ```
-sudo add-apt-repository \
+$ sudo add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
    edge"
 ```
-
-Install Docker
+Ensure you are about to install from teh Docker repo instead of default Ubuntu repo:
 
 ```
-sudo apt install docker-ce docker-cli
+$ sudo apt-cache policy docker-ce
+
+// you should see output similar to:
+docker-ce:
+  Installed: (none)
+Cadidate: 5:19.03.4~3-0ubuntu-bionic
+Version table:
+  ... (a bunch of versions listed)
+```
+Install Docker and peer packages
+
+```
+sudo apt install docker-ce docker-ce-cli containerd.io
 ```
 
 ### Configure Docker on Ubuntu
@@ -139,10 +156,9 @@ Create the following `/etc/docker/daemon.json` file in WSL machine:
 }
 ```
 
-### Enable and start the docker daemon
+### Start the docker daemon
 
 ```
-sudo service docker enable
 sudo service docker start
 ```
 
@@ -208,7 +224,7 @@ Server: Docker Engine - Community
 Using [chocolatey][] is the easiest for this one:
 
 ```
-choco install docker-compose
+$ choco install docker-compose
 ```
 
 [c-share-passwords]: https://github.com/docker/for-win/issues/616 
