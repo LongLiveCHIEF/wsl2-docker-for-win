@@ -27,7 +27,7 @@ a simple script to allow automation of this setup.
 ## Usage
 
 So here's the thing. Once I got everything up and runing, I found I had absolutely no need
-to install the native windows docker client!  I wound up mapping `\\wsl$\\Ubuntu-18.04` to 
+to install the native windows docker client!  I wound up mapping `\\wsl$\Ubuntu`<sup>[1](#notes)</sup> to 
 my `U:` drive, and automounting  `root = /` in `/etc/wsl.conf` on Ubuntu (Installation step 1).
 
 As a result, I can now navigate to `U:` in windows explorer or my editor of choice to open and edit
@@ -220,3 +220,9 @@ choco install docker-compose
 [ubuntu-store]: https://www.microsoft.com/store/productId/9N9TNGVNDL3Q
 [windows-terminal-store]: https://www.microsoft.com/store/productId/9N0DX20HK701
 [wsl2 tech preview]: https://docs.docker.com/docker-for-windows/wsl-tech-preview/
+
+***
+
+### Notes
+
+<sup>*1</sup> Make sure you use the name of the distro as listed in the output of the `wsl -l` command
