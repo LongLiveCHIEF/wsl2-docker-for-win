@@ -84,7 +84,7 @@ from your windows _or_ ubuntu terminals.
 
 This step is mostly going to follow the [Docker Installing on Ubuntu][] docs, with one
 major exception. The current Ubuntu distro from Microsoft doesn't use `systemd`, so
-you'll have to start/stop docker with `sudo service docker {start|stop|restart|enable|disable}`.
+you'll have to start/stop docker with `sudo service docker {start|stop|restart|status}`.
 
 
 ```
