@@ -144,14 +144,14 @@ Host is from the Linux machine, but I haven't gotten that far yet, so for now, w
 just set the daemon to listen to `unix://` and _optionally_ `tcp://0.0.0.0:2375`.
 
 If you don't intend to use the `docker` command from powershell or a windows terminal,
-and map the wsl as a network drive, you can remote the host entry as noted below to
+and map the wsl as a network drive, you can remove the host entry from the example below to
 increase security.
 
 Create the following `/etc/docker/daemon.json` file in WSL machine:
 
 ```
 {
-    "hosts": ["unix://", "tcp://0.0.0.0:2375"], // remove the tcp if you only use docker-cli from Ubuntu
+    "hosts": ["unix://", "tcp://0.0.0.0:2375"]
     "experimental": true
 }
 ```
