@@ -151,7 +151,7 @@ Create the following `/etc/docker/daemon.json` file in WSL machine:
 
 ```
 {
-    "hosts": ["unix://", "tcp://0.0.0.0:2375"]
+    "hosts": ["unix://", "tcp://0.0.0.0:2375"],
     "experimental": true
 }
 ```
